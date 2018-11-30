@@ -1,0 +1,21 @@
+<section class="section">
+    <div class="container">
+    <% page.posts.each(function(post){ %>
+        <%- partial('common/article', { post, index: true }) %>
+    <% }); %>
+    <% if (page.total > 1) { %>
+        <%- partial('common/paginator') %>
+    <% } %>
+    </div>
+</section>
+
+
+// auto Chinese language url redirect
+<script>
+  var userLang = navigator.language || navigator.userLanguage; 
+  var curLang = window.location.href;
+  
+  if (userLang.includes('zh') && !curLang.includes('zh')) {
+    document.location = "/zh-cn/" + document.location.hash;
+  }
+</script>
