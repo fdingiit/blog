@@ -593,7 +593,7 @@ func (r *remote) runContainerdDaemon() error {
 	return nil
 }
 ```
-s
+
 ```go
 /* Ref 2-1-16. Wait on that channel.
  * https://github.com/moby/moby/blob/v17.03.0-ce/libcontainerd/remote_unix.go#L170
