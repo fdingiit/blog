@@ -223,7 +223,7 @@ select {
 		// do something when there is nothing in channel
 		fmt.Println("nothing to do, boring...")
 }	
-``` 
+```
 
 #### 1.2.1 发送操作实现
 本小节将结合源码，介绍向channel中发送数据的实现。
