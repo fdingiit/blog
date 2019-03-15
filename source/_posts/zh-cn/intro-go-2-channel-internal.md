@@ -115,15 +115,6 @@ cpp := make(chan int, 1)		// diff w/ unbuffered?
 
 在为其分配内存时，三种不同情况需要区别对待。但为了行文方便，除非特殊说明，本文大部分情况下只区分**有缓存区**和**无缓存区**两种情况。
 
-***题外话：***
-*`chan`的大小取决于描述符`hchan`的大小，以及`chan`中所存放的数据大小：*
- 
-```c
-sizeof(chan) = sizeof(chan_descriptor) + sizeof(chan_elem) 
-```
-
-*数据大小 = 数据量 × 单个数据大小，很容易理解。但`hchan`的大小呢，尤其当为`hchan`分配内存时需要考虑对齐因素时？ [answer here](https://github.com/golang/go/blob/release-branch.go1.10/src/runtime/chan.go#L27)*
-
 #### 1.1.1 不带缓存区的channel
 有两种等价的方式创建无缓存的channel：
 
@@ -218,7 +209,7 @@ select {
 		// full, cannot send anything
 		fmt.Println("oh shit, too many work todo...")
 }	
-``` 
+```
 
 ```go
 // Example 2-1-9. Example for non-blocking recv operation
