@@ -281,7 +281,6 @@ sendDirect(c.elemtype, sg, ep)
 // wake up receiver
 goready(gp, skip+1)
 ```
-()
 
 ##### 1.2.2.3 无接收者&&缓存区有空余空间
 缓存区有空间隐含说明没有等待数据的接收者，此时将数据拷贝到缓存区（环形队列）即可。
