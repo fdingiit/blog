@@ -283,8 +283,8 @@ goready(gp, skip+1)
 ```
 ()
 
-##### 1.2.2.3 无接受者&&缓存区有空余空间
-缓存区有空间隐含说明没有等待数据的接受者，此时将数据拷贝到缓存区（环形队列）即可。
+##### 1.2.2.3 无接收者&&缓存区有空余空间
+缓存区有空间隐含说明没有等待数据的接收者，此时将数据拷贝到缓存区（环形队列）即可。
 
 ```go
 /* Ref 2-1-6. Send data to buffer.
@@ -305,7 +305,7 @@ if c.qcount < c.dataqsiz {
 }
 ```
 
-##### 1.2.2.4 无接受者&&缓存区满
+##### 1.2.2.4 无接收者&&缓存区满
 在非阻塞模式下，缓存区满会导致发送数据的协程**阻塞并挂起**。从`hchan`的角度来说，即是维护`sendq`双链表：
 
 ```go
@@ -525,7 +525,8 @@ func closechan(c *hchan) {
 （正文完）
 
 ----
-**BONUS：**
+
+#### BONUS
 
 对channel进行`close`操作，是Go常用的发送一次性信号的手段，常见于处理关闭流程。如果你对这个技巧还不熟悉，请阅读：
 > [Go Concurrency Patterns: Pipelines and cancellation](https://blog.golang.org/pipelines)。
