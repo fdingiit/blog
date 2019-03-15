@@ -128,8 +128,6 @@ c := make(chan int, 0)
 
 注意第二种等价的编码方法，`size`被赋值为了0，此时可以被省略。
 
-[!1.chan_unbuffered]()
-
 #### 1.1.2 带缓存区的channel 
 对于数据类型为非指针和指针的两种带缓存的`channel`，创建方式也一致：
 
@@ -137,14 +135,11 @@ c := make(chan int, 0)
 // Example 2-1-3. The way to create buffered channel w/o pointer
 c := make(chan int, 10)			// no pointers 		
 ```
-[2.chan_no_pointer]()
 
 ```go
 // Example 2-1-4. The way to create buffered channel w/ pointers
 c := make(chan *int, 10) 		// contain pointers
 ```
-
-[3.chan_with_pointer]()
 
 带指针/不带指针两种内存模型不一致的原因与垃圾回收机制相关。~~缘分到了的话，以后会把GC这块补上。~~
 
@@ -310,8 +305,6 @@ if c.qcount < c.dataqsiz {
 }
 ```
 
-！@#！@#！#！#图示
-
 ##### 1.2.2.4 无接受者&&缓存区满
 在非阻塞模式下，缓存区满会导致发送数据的协程**阻塞并挂起**。从`hchan`的角度来说，即是维护`sendq`双链表：
 
@@ -337,8 +330,6 @@ goparkunlock(&c.lock, "chan send", traceEvGoBlockSend, 3)
 // wait for awoken
 // SKIP...
 ```
-
-#！@#！@# 图示
 
 #### 1.2.2 接收操作实现
 本小节将结合源码，介绍从channel中接收数据的实现。
@@ -426,9 +417,6 @@ c.sendx = c.recvx // c.sendx = (c.sendx+1) % c.dataqsiz
 // awoke that waiting sender
 goready(gp, skip+1)
 ```
-
-[4.1.buffered_recv_has_sender_before]()
-[4.2.buffered_recv_has_sender_after]
 
 ##### 1.2.3.4 没有挂起的发送者
 对于没有挂起的发送者这个情况，需要分两类讨论：
