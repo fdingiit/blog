@@ -606,7 +606,7 @@ func (r *remote) handleConnectionChange() {
 }
 ```
 
-注意*Ref 2-1-15*中的第21行，在这个`close`操作之前，`setOOMScore()`和`WriteString()`的异常处理都可能导致`close`操作无法被执行到。因而可能导致*Ref 2-1-16*中，试图获取这个信号的协程永远阻塞在那。表现在生产环境的现象即是，在触发了OOM异常（即`setOOMScore()`失败）之后，docker客户端命令卡死。
+注意*Ref 2-1-15*中的第28行，在这个`close`操作之前，`setOOMScore()`和`WriteString()`的异常处理都可能导致`close`操作无法被执行到。因而可能导致*Ref 2-1-16*中，试图获取这个信号的协程永远阻塞在那。表现在生产环境的现象即是，在触发了OOM异常（即`setOOMScore()`失败）之后，docker客户端命令卡死。
 
 在*docker-ce-17.06*版本中，这个bug被修复，方法为将`close`所在的代码位置移到`setOOMScore()`和`WriteString()`之前，保证`close`语句的执行。维护者同时写一下如下注释：
 
