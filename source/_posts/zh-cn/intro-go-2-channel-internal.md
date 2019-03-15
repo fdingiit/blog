@@ -70,7 +70,8 @@ type waitq struct {
  
 type sudog struct {  
 	// The following fields are protected by the hchan.lock of the  
-	// channel this sudog is blocking on. shrinkstack depends on // this for sudogs involved in channel ops.  
+	// channel this sudog is blocking on. shrinkstack depends on 
+	// this for sudogs involved in channel ops.  
 	g *g  
   
 	// isSelect indicates g is participating in a select, so  
@@ -85,7 +86,7 @@ type sudog struct {
 }
 ```
 
-`sudog`结构体的中的`g`，可以简单理解为Go语言世界中的`进程`，即Go语言术语`协程（goroutine）`。`sudog`的存在是为了更好的管理`g`，因而包含了用于维护双链表的两根指针，以及一个指向具体数据的`unsafe.Pointer`指针。
+`sudog`结构体的中的`g`，可以简单理解为Go语言世界中的`进程`，即Go语言术语`协程（goroutine）`。`sudog`的存在是为了更好的管理`g`，因而包含了用于维护双链表的两根指针，以及一个指向具体数据的`unsafe.Pointer`指针，这个指针所指向的数据即是与channel交互的数据。
 
 可以看到，`hchan`本质上维护了一个**环形队列**，用于**存放数据**；以及两个**双链表**，维护等待读取/存放数据的**协程**。
 
@@ -112,16 +113,16 @@ cpp := make(chan int, 1)		// diff w/ unbuffered?
 	- w/o pointers： 缓存区数据类型不是指针的channel
 
 
-在为其分配内存时，三种不同情况需要区别对待。但为了行文方便，除非特殊说明，本文大部分情况下只区分有缓存和无缓存两种情况。
+在为其分配内存时，三种不同情况需要区别对待。但为了行文方便，除非特殊说明，本文大部分情况下只区分**有缓存区**和**无缓存区**两种情况。
 
-> ***题外话：***
-> *`chan`的大小取决于描述符`hchan`的大小，以及`chan`中所存放的数据大小：*
-> 
-> ```c
-> sizeof(chan) = sizeof(chan_descriptor) + sizeof(chan_elem) 
-> ```
-> 
-> *数据大小 = 数据量 × 单个数据大小，很容易理解。但`hchan`的大小呢，尤其当为`hchan`分配内存时需要考虑对齐因素时？ [answer here](https://github.com/golang/go/blob/release-branch.go1.10/src/runtime/chan.go#L27)*
+***题外话：***
+*`chan`的大小取决于描述符`hchan`的大小，以及`chan`中所存放的数据大小：*
+ 
+```c
+sizeof(chan) = sizeof(chan_descriptor) + sizeof(chan_elem) 
+```
+
+*数据大小 = 数据量 × 单个数据大小，很容易理解。但`hchan`的大小呢，尤其当为`hchan`分配内存时需要考虑对齐因素时？ [answer here](https://github.com/golang/go/blob/release-branch.go1.10/src/runtime/chan.go#L27)*
 
 #### 1.1.1 不带缓存区的channel
 有两种等价的方式创建无缓存的channel：
@@ -160,7 +161,7 @@ c := make(chan *int, 10) 		// contain pointers
 ### 1.2 读写channel
 #### 1.2.0 导言
 ##### 1.2.0.1 `<-` 操作符
-Go语言使用`<-`操作符操作`chan`：
+Go语言使用`<-`操作符操作`chan`：	
 
 ```go
 // Example 2-1-5. Play with <-
@@ -171,7 +172,7 @@ c <- 10
 
 // recv
 x := <- c
-``` 
+```
 
 ##### 1.2.0.2 阻塞模式与非阻塞模式
 对于`chan`的读写操作，Go程序员可以选择**阻塞模式**或者**非阻塞模式**。
@@ -186,7 +187,7 @@ c <- 20			// cannot send anymore, will be blocked here
 
 // recv
 x := <- c		// CAN NOT BE HERE
-``` 
+```
 
 *Example 2-1-6*试图通过**阻塞写**的方式发送2个元素（10,20）。由于`c`的容量只有1，因此程序会阻塞在`c <- 20`这一行代码处。
 
@@ -199,7 +200,7 @@ c := make(chan int, 10)
 
 // recv
 x := <- c		// nothing to recv, will be blocked here 
-``` 
+```
 
 *Example 2-1-7*创建了一个容量为10的`chan`，因为没有“生产者”向channel中写数据，因此程序会挂起在**阻塞读**操作：`x := <- c`。
 
@@ -279,7 +280,7 @@ if sg := c.recvq.dequeue(); sg != nil {
 ```go
 /* Ref 2-1-5-2. Send data to receiver directly. Part II
  * https://github.com/golang/go/blob/release-branch.go1.10/src/runtime/chan.go#L283
- * line 283 ~ 2923
+ * line 283 ~ 292
  */
  
 // step 2:
@@ -435,7 +436,7 @@ c.sendx = c.recvx // c.sendx = (c.sendx+1) % c.dataqsiz
 // step 3:
 // awoke that waiting sender
 goready(gp, skip+1)
-``` 
+```
 
 ！@#！@#！@#！#图示
 
@@ -521,25 +522,25 @@ func closechan(c *hchan) {
   
 	// SKIP...
   
-    // release all readers  
+    	// release all readers  
 	for {  
 		sg := c.recvq.dequeue()  
 		// SKIP...
 	}  
   
-    // release all writers (they will panic)  
+    	// release all writers (they will panic)  
 	for {  
 		sg := c.sendq.dequeue()  
 		// SKIP...
 	}  
     
-   // Ready all Gs now that we've dropped the channel lock.  
-   for glist != nil {  
+   	// Ready all Gs now that we've dropped the channel lock.  
+   	for glist != nil {  
 		gp := glist  
 		glist = glist.schedlink.ptr()  
 		gp.schedlink = 0  
 		goready(gp, 3)  
-   }  
+   	}  
 }
 ```
 
@@ -635,3 +636,15 @@ go func() {
 ```
 
 （本章节完）
+
+---
+
+如果您喜欢这篇文章，请支持我，谢谢。
+
+😉
+
+~~唯一指定支付宝~~  
+<img src="/about/index/ali_pay.jpeg" style="width:120px;height:120px;">
+
+~~唯一指定微信~~  
+<img src="/about/index/wechat_pay.jpeg" style="width:120px;height:120px;">
