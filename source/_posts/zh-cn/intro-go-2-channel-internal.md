@@ -128,7 +128,7 @@ c := make(chan int, 0)
 
 注意第二种等价的编码方法，`size`被赋值为了0，此时可以被省略。
 
-！@#！@#这里放内存模型图
+[!1.chan_unbuffered]()
 
 #### 1.1.2 带缓存区的channel 
 对于数据类型为非指针和指针的两种带缓存的`channel`，创建方式也一致：
@@ -137,15 +137,14 @@ c := make(chan int, 0)
 // Example 2-1-3. The way to create buffered channel w/o pointer
 c := make(chan int, 10)			// no pointers 		
 ```
-
-！@#！@#这里放内存模型图
+[2.chan_no_pointer]()
 
 ```go
 // Example 2-1-4. The way to create buffered channel w/ pointers
 c := make(chan *int, 10) 		// contain pointers
 ```
 
-！@#！@#这里放内存模型图
+[3.chan_with_pointer]()
 
 带指针/不带指针两种内存模型不一致的原因与垃圾回收机制相关。~~缘分到了的话，以后会把GC这块补上。~~
 
@@ -287,8 +286,7 @@ sendDirect(c.elemtype, sg, ep)
 // wake up receiver
 goready(gp, skip+1)
 ```
-
-！@#！@#！#！#图示
+()
 
 ##### 1.2.2.3 无接受者&&缓存区有空余空间
 缓存区有空间隐含说明没有等待数据的接受者，此时将数据拷贝到缓存区（环形队列）即可。
@@ -429,7 +427,8 @@ c.sendx = c.recvx // c.sendx = (c.sendx+1) % c.dataqsiz
 goready(gp, skip+1)
 ```
 
-！@#！@#！@#！#图示
+[4.1.buffered_recv_has_sender_before]()
+[4.2.buffered_recv_has_sender_after]
 
 ##### 1.2.3.4 没有挂起的发送者
 对于没有挂起的发送者这个情况，需要分两类讨论：
