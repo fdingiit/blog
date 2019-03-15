@@ -541,7 +541,7 @@ func closechan(c *hchan) {
 type remote struct {  
 	// SKIP... 
 	daemonWaitCh         chan struct{}  
-    // SKIP
+    	// SKIP
 }
 ```
 
@@ -575,7 +575,7 @@ func (r *remote) runContainerdDaemon() error {
 	    cmd.Wait()  
 		
 		// NOOOOOOOOOOOOOOOOOOOOOOOOOTE HERE!!!!!
-	    close(r.daemonWaitCh)  
+	    	close(r.daemonWaitCh)  
 	}() // Reap our child when needed  
 	r.daemonPid = cmd.Process.Pid  
 	return nil
@@ -589,8 +589,8 @@ func (r *remote) runContainerdDaemon() error {
  
 func (r *remote) handleConnectionChange() {
 	// SKIP...
-   <-r.daemonWaitCh  
-    // SKIP.. 
+   	<-r.daemonWaitCh  
+    	// SKIP.. 
 }
 ```
 
