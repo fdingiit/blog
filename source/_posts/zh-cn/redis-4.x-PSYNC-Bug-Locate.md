@@ -1,7 +1,7 @@
 ---
 title: Redis PSYNC2 Bug定位
 date: 2017-09-29 21:20:37
-tags: golang 
+tags: redis 
 ---
 
 # Redis 3.x/4.x 内部同步机制简介
