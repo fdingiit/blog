@@ -1,5 +1,5 @@
 ---
-title: Redis PSYNC2 Bug定位
+title: Redis 3.x/4.x 内部同步机制简介
 date: 2017-09-29 21:20:37
 tags: redis 
 ---
