@@ -4,7 +4,6 @@ date: 2018-11-27 12:04:48
 tags: golang
 ---
 
-# 序
 《Intro Go》系列文字来源于公司内部技术培训手稿的进一步整理，其致力于从Go语言源码/实现——主要是runtime——的角度向大家介绍这门受面越来越广[<sup>[1]</sup>](https://blog.github.com/2018-11-15-state-of-the-octoverse-top-programming-languages/)的新技术。
   
 与大多数介绍编程语言的文字/书籍不同，《Intro Go》的初衷不在于告诉大家如何写出正确优雅的Go代码，亦不是介绍使用golang开发的各种主流第三方库和开源项目（例如[docker](https://github.com/moby/moby)），更不会竭力向读者证明golang有多棒，“golang天下第一”。《Intro Go》的目标是希望读者通过阅读这一系列文章，能够理解这门语言的设计理念，及其三个最核心的关键字——`chan`/`select`/`go`——的具体实现。  

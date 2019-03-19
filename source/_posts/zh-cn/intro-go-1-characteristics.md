@@ -4,9 +4,6 @@ date: 2018-11-27 21:20:37
 tags: golang 
 ---
 
-
-# 第一部分 特性
-
 Go是一个年轻的编程语言，只有九岁[<sup>[1]</sup>](https://blog.golang.org/9years)。但事实上，在2013年docker宣布开源，并在随后几年逐渐成为主流容器解决方案之前，它都没有获得太多的关注[<sup>[2]</sup>](https://www.tiobe.com/tiobe-index/go/)，一直到2016年左右才真正吸引到大众的眼球<a href="#ref-1"><sup>[注1]</sup></a> <a name="bref-1"></a>。  
 
 Go的作者是三位来自Google的工程师：Robert Griesemer, [Rob Pike](https://en.wikipedia.org/wiki/Rob_Pike "Rob Pike"), 和 [Ken Thompson](https://en.wikipedia.org/wiki/Ken_Thompson)。其中后两位比较有说头：前者参与开发了著名的[Plan 9](https://en.wikipedia.org/wiki/Plan_9_from_Bell_Labs)；后者参与编码了Unix内核的早期版本，并发明了[B语言](https://en.wikipedia.org/wiki/B_%28programming_language%29)。可以看到，他们两位的最大共同点在于：都是ANSI C语言的重度使用者。因此，golang有着浓厚的C语言痕迹。
