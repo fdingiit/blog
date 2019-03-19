@@ -1,5 +1,5 @@
 ---
-title: 《Intro Go》第二部分：核心实现
+title: 《Intro Go》第二部分：核心实现 (I)
 date: 2019-03-13 21:20:37
 tags: golang 
 ---
